@@ -17,7 +17,7 @@ function SignUp(props) {
                     enabled: true
                 }
             });
-            console.log(user);
+            // console.log(user);
         } catch (error) {
             console.log('error signing up:', error);
         }

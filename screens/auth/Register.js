@@ -18,7 +18,7 @@ function Register(props) {
     const [showConfirmationMessage, setShowConfirmationMessage] = useState(false);
 
     async function signUp() {
-        console.log(email, password)
+        // console.log(email, password)
         setRegisterdEmail(email)
         try {
             const { user } = await Auth.signUp({

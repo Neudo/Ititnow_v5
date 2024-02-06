@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {SafeAreaView, ScrollView, Text, View} from "react-native";
+import {Pressable, SafeAreaView, ScrollView, Text, View} from "react-native";
 import {StyleSheet} from "react-native";
 import style  from "../../assets/css/style";
 import Toggle from "../../components/Toggle";
@@ -16,8 +16,11 @@ function Layout(props) {
     });
     const [isEnabled, setIsEnabled] = useState(true);
 
+    const navigation = props.navigation;
+
     return (
         <SafeAreaView>
+            <Pressable onPress={()=> {navigation.navigate('Home')}} ><Text>Go to home</Text></Pressable>
             <View style={{top: 120, height:"23%", position:'relative', marginBottom: 33, marginHorizontal:20}} >
                 <Text style={[style.title, styles.title]} >Créer votre compte ou connecter vous</Text>
                 <Text style={[style.smallText, styles.subTitle]}>Connecter vous afin de profiter au mieux des fonctionnalités de Ititnow</Text>
