@@ -11,11 +11,9 @@ function Layout(props) {
 
     const [isEnabled, setIsEnabled] = useState(true);
 
-    const navigation = props.navigation;
-
     return (
         <SafeAreaView>
-            <Pressable onPress={()=> {navigation.navigate('Home')}} ><Text>Go to home</Text></Pressable>
+
             <View style={{top: 120, height:"23%", position:'relative', marginBottom: 33, marginHorizontal:20}} >
                 <Text style={[style.title, styles.title]} >Créer votre compte ou connecter vous</Text>
                 <Text style={[style.smallText, styles.subTitle]}>Connecter vous afin de profiter au mieux des fonctionnalités de Ititnow</Text>

@@ -56,7 +56,7 @@ function RootNavigation(props) {
 
             <Stack.Screen
                 name="OnBoarding" component={OnBoarding}
-                options={{headerShown: false, animation: 'slide_from_right'}}
+                options={{headerShown: false, animation: 'slide_from_left'}}
             />
 
 
