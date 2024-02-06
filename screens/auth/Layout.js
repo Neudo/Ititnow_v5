@@ -3,17 +3,12 @@ import {Pressable, SafeAreaView, ScrollView, Text, View} from "react-native";
 import {StyleSheet} from "react-native";
 import style  from "../../assets/css/style";
 import Toggle from "../../components/Toggle";
-import { useFonts, Poppins_400Regular, Poppins_300Light, Poppins_700Bold } from '@expo-google-fonts/poppins';
 import Login from "./Login";
 import Register from "./Register";
 
 
 function Layout(props) {
-    let [fontsLoaded] = useFonts({
-        Poppins_400Regular,
-        Poppins_300Light,
-        Poppins_700Bold,
-    });
+
     const [isEnabled, setIsEnabled] = useState(true);
 
     const navigation = props.navigation;
@@ -48,11 +43,11 @@ const styles = StyleSheet.create({
     },
     title: {
         color: 'white',
-        fontFamily: 'Poppins_700Bold',
+        fontFamily: 'PoppinsBold',
     },
     subTitle: {
         color: '#d5d5d5',
-        fontFamily: 'Poppins_400Regular',
+        fontFamily: 'PoppinsRegular',
     },
 })
 

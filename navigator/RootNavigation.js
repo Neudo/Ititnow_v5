@@ -4,6 +4,7 @@ import Layout from "../screens/auth/Layout";
 import Home from "../screens/protected/Home";
 import {useNavigation} from "@react-navigation/native";
 import {Auth, Hub} from "aws-amplify";
+import OnBoarding from "../screens/onBoarding";
 
 
 function RootNavigation(props) {
@@ -50,6 +51,11 @@ function RootNavigation(props) {
             />
             <Stack.Screen
                 name="Home" component={Home}
+                options={{headerShown: false, animation: 'slide_from_right'}}
+            />
+
+            <Stack.Screen
+                name="OnBoarding" component={OnBoarding}
                 options={{headerShown: false, animation: 'slide_from_right'}}
             />
 

@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     },
     input: {
         fontSize: 18,
-        fontFamily: 'Poppins_400Regular',
+        fontFamily: 'PoppinsRegular',
         width: '76%',
         marginLeft: 'auto'
     }

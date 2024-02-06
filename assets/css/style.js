@@ -2,12 +2,13 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
 
     title: {
-        fontSize: 24,
+        fontSize: 26,
         fontWeight: 'bold',
-        fontFamily: 'Poppins_700Bold',
+        fontFamily: 'PoppinsBold',
     },
     smallText: {
         fontSize: 12,
+        fontFamily: 'Poppins_300Light',
     },
 
 });
