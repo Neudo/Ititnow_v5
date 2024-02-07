@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
 import {Text, View, StyleSheet, SafeAreaView, Pressable} from "react-native";
 import { MaterialIcons} from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 import generalStyle  from "../assets/css/style";
 import SmallCta from "../components/SmallCta";
 import {useNavigation} from "@react-navigation/native";
-import Cta from "../components/Cta";
+import {Gesture, GestureDetector, Directions} from "react-native-gesture-handler";
+
+
 
 const onBoardingSteps = [
     {
@@ -39,8 +40,29 @@ function OnBoarding() {
         }
     }
 
+    const swipeForeward = Gesture.Fling()
+        .direction(Directions.LEFT)
+        .onEnd((e) =>
+    {
+        if(screenIndex < onBoardingSteps.length - 1) {
+            setScreenIndex(screenIndex + 1)
+        }
+    })
+
+    const swipeBack = Gesture.Fling()
+        .direction(Directions.RIGHT)
+        .onEnd((e) =>
+        {
+            if(screenIndex > 0) {
+                setScreenIndex(screenIndex - 1)
+            }
+        })
+
+    const composed = Gesture.Simultaneous(swipeForeward, swipeBack)
+
     return (
         <SafeAreaView style={styles.page} >
+            <GestureDetector gesture={composed}>
             <View style={styles.pageContent} >
                 <View style={styles.header}>
                     {onBoardingSteps.map((step, index) => {
@@ -73,6 +95,7 @@ function OnBoarding() {
 
                 </View>
             </View>
+            </GestureDetector>
         </SafeAreaView>
     );
 }
