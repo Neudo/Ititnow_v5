@@ -6,6 +6,15 @@ import SmallCta from "../components/SmallCta";
 import {useNavigation} from "@react-navigation/native";
 import {Gesture, GestureDetector, Directions} from "react-native-gesture-handler";
 
+import Animated, {
+    FadeIn,
+    FadeOut,
+    SlideInLeft,
+    SlideInRight,
+    SlideOutLeft,
+    SlideOutRight
+} from 'react-native-reanimated'
+
 
 
 const onBoardingSteps = [
@@ -40,30 +49,22 @@ function OnBoarding() {
         }
     }
 
-    const swipeForeward = Gesture.Fling()
-        .direction(Directions.LEFT)
-        .onEnd((e) =>
-    {
-        if(screenIndex < onBoardingSteps.length - 1) {
-            setScreenIndex(screenIndex + 1)
+    const onBack = () => {
+        if(screenIndex > 0) {
+            setScreenIndex(screenIndex - 1)
         }
-    })
+    }
 
-    const swipeBack = Gesture.Fling()
-        .direction(Directions.RIGHT)
-        .onEnd((e) =>
-        {
-            if(screenIndex > 0) {
-                setScreenIndex(screenIndex - 1)
-            }
-        })
 
-    const composed = Gesture.Simultaneous(swipeForeward, swipeBack)
+    const swipes = Gesture.Simultaneous(
+        Gesture.Fling().direction(Directions.LEFT).onEnd(onContinue),
+        Gesture.Fling().direction(Directions.RIGHT).onEnd(onBack)
+    )
 
     return (
         <SafeAreaView style={styles.page} >
-            <GestureDetector gesture={composed}>
-            <View style={styles.pageContent} >
+            <GestureDetector gesture={swipes}>
+            <View key={screenIndex} style={styles.pageContent} >
                 <View style={styles.header}>
                     {onBoardingSteps.map((step, index) => {
                         return (
@@ -78,10 +79,12 @@ function OnBoarding() {
 
                 </View>
 
+                <Animated.View entering={FadeIn} exiting={FadeOut}  >
                 <MaterialIcons style={styles.image} name={data.icon} size={124} color="#6FB2AE" />
+                </Animated.View>
                 <View style={styles.footer} >
-                    <Text style={[generalStyle.title, styles.title]} >{data.title}</Text>
-                    <Text style={styles.description} >{data.description}</Text>
+                    <Animated.Text entering={SlideInRight.duration(300)} exiting={SlideOutLeft} style={[generalStyle.title, styles.title]} >{data.title}</Animated.Text>
+                    <Animated.Text entering={SlideInRight.delay(70)}  exiting={SlideOutLeft}   style={styles.description} >{data.description}</Animated.Text>
 
                     <View style={styles.buttonsRow} >
                         <Pressable onPress={()=> {navigation.navigate("Home")}} >
