@@ -8,6 +8,8 @@ import {SplashScreen} from "expo-router";
 import {useEffect, useState} from "react";
 import {GestureHandlerRootView} from "react-native-gesture-handler";
 Amplify.configure(awsconfig);
+import {Provider} from "react-redux";
+import store from "./redux/store";
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -34,11 +36,13 @@ export default function App() {
 
 
     return (
-        <GestureHandlerRootView style={ {flex:1} } >
-            <NavigationContainer>
-                <RootNavigation/>
-            </NavigationContainer>
-        </GestureHandlerRootView>
+        <Provider store={store} >
+            <GestureHandlerRootView style={ {flex:1} } >
+                <NavigationContainer>
+                    <RootNavigation/>
+                </NavigationContainer>
+            </GestureHandlerRootView>
+        </Provider>
     );
 }
 

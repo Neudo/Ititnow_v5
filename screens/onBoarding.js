@@ -9,10 +9,8 @@ import {Gesture, GestureDetector, Directions} from "react-native-gesture-handler
 import Animated, {
     FadeIn,
     FadeOut,
-    SlideInLeft,
     SlideInRight,
     SlideOutLeft,
-    SlideOutRight
 } from 'react-native-reanimated'
 
 
@@ -45,7 +43,7 @@ function OnBoarding() {
         if(screenIndex < onBoardingSteps.length - 1) {
             setScreenIndex(screenIndex + 1)
         } else {
-            navigation.navigate('Home')
+            navigation.navigate('AuthLayout')
         }
     }
 
@@ -87,7 +85,7 @@ function OnBoarding() {
                     <Animated.Text entering={SlideInRight.delay(70)}  exiting={SlideOutLeft}   style={styles.description} >{data.description}</Animated.Text>
 
                     <View style={styles.buttonsRow} >
-                        <Pressable onPress={()=> {navigation.navigate("Home")}} >
+                        <Pressable onPress={()=> {navigation.navigate("AuthLayout")}} >
                             <Text style={styles.skip} >Passer</Text>
                         </Pressable>
                         <View style={styles.ctaWrapper} >
