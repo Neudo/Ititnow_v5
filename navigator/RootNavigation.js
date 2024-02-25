@@ -6,6 +6,7 @@ import {useNavigation} from "@react-navigation/native";
 import {Auth, Hub} from "aws-amplify";
 import OnBoarding from "../screens/onBoarding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Menu from "../components/layouts/header/Menu";
 
 
 function RootNavigation(props) {
@@ -81,6 +82,10 @@ function RootNavigation(props) {
             <Stack.Screen
                 name="Home" component={Home}
                 options={{headerShown: false, animation: 'slide_from_right'}}
+            />
+            <Stack.Screen
+                name="Menu" component={Menu}
+                options={{headerShown: false, animation: 'slide_from_bottom'}}
             />
 
         </Stack.Navigator>

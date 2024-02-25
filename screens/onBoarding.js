@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, SafeAreaView, Pressable} from "react-native";
 import { MaterialIcons} from '@expo/vector-icons';
 import generalStyle  from "../assets/css/style";
@@ -38,6 +38,7 @@ function OnBoarding() {
 
     const [screenIndex, setScreenIndex] = useState(0)
     const data = onBoardingSteps[screenIndex]
+
 
     const onContinue = () => {
         if(screenIndex < onBoardingSteps.length - 1) {
