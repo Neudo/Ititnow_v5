@@ -78,7 +78,7 @@ export default Menu;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#6FB2AE',
+        backgroundColor: '#51796F',
         paddingTop: 30,
     },
     containerItems: {

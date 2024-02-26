@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         left: 25,
         justifyContent: 'center',
         alignItems: 'flex-start',
-        zIndex: 1000,
+        zIndex: 9000,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
