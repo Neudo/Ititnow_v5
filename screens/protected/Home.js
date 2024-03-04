@@ -1,32 +1,58 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {ScrollView, Text, View, StyleSheet, Button, Pressable, TouchableOpacity} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
+import * as Location from 'expo-location';
 import axios from "axios";
 import Burger from "../../components/layouts/header/Burger";
-
-const initialRegion = {
-    latitude: 48.8772204,
-    longitude: 2.3501225,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-}
 
 
 function Home(props) {
     const mapRef = useRef()
+    const [status, setStatus] = useState(null);
+    const [mapRegion, setmapRegion] = useState(null);
+    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(null);
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await  Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setStatus('Permission to access location was denied');
+                return;
+            }
+            let location = await Location.getCurrentPositionAsync({});
+
+            setmapRegion({
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+            });
+
+                mapRef.current.animateToRegion({
+                    latitude: location.coords.latitude,
+                    longitude: location.coords.longitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }, 1000);
+
+            setLatitude(location.coords.latitude);
+            setLongitude(location.coords.longitude);
+        })();
+    }, []);
 
 
     const navigation = useNavigation()
 
-    const getNearbyRestaurants = async (latitude, longitude) => {
+    const getNearbyRestaurants = async () => {
         try {
             const response = await axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
                 params: {
                     location: `${latitude},${longitude}`,
-                    rankby: 'distance',
+                    radius: 600,
                     type: 'restaurant',
-                    keyword: 'coréen',
+                    keyword: 'poulet',
                     key: 'AIzaSyA3I7cXhLM51hRryr_l_70JMJqKuviH4do',
                     opennow: false,
                 }
@@ -34,7 +60,6 @@ function Home(props) {
 
 
             const allRestaurants = response.data.results;
-            console.log(allRestaurants)
             const filteredRestaurants = allRestaurants.filter(restaurant =>
                 restaurant.rating >= 4 );
 
@@ -62,29 +87,31 @@ function Home(props) {
 
 
     return (
-
+mapRegion === null ? <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Loading...</Text></View> :
+    (
         <View style={{flex:1}}>
             <Burger/>
             <View style={styles.containerMain} >
                 <View style={styles.containerMainTop}>
                     <TouchableOpacity style={[styles.btnMoreFilter, styles.btn]} >
-                        <Text style={{fontSize:'14'}}>Plus de filtres</Text>
+                        <Text style={{fontSize:14}}>Plus de filtres</Text>
                     </TouchableOpacity>
                 </View>
 
                 <View style={styles.containerMiddle} >
                     <TouchableOpacity style={[styles.btnFilter, styles.btn]} >
-                        <Text style={{fontSize:'16'}}>Mon budget</Text>
+                        <Text style={{fontSize:16}}>Mon budget</Text>
                     </TouchableOpacity>
 
+
                     <TouchableOpacity style={[styles.btnFilter, styles.btn]} >
-                        <Text style={{fontSize:'16'}}>Distance max</Text>
+                        <Text style={{fontSize:16}}>Distance max</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.containerBigCta} >
                     { <TouchableOpacity
                         style={[styles.btn, styles.bigCta]}
-                        onPress={() => getNearbyRestaurants(48.866667, 2.333333)}
+                        onPress={() => getNearbyRestaurants()}
                     >
                         <Text style={{fontSize: 26, fontFamily: 'PoppinsBold'}} >Trouve moi un restau</Text>
                     </TouchableOpacity> }
@@ -94,14 +121,16 @@ function Home(props) {
             <MapView
                 style={StyleSheet.absoluteFill}
                 provider={PROVIDER_GOOGLE}
-                initialRegion={initialRegion}
+                initialRegion={mapRegion}
                 showsUserLocation
                 showsMyLocationButton
-                maxZoomLevel={20}
-                minZoomLevel={18}
+                followsUserLocation
+                maxZoomLevel={17}
+                minZoomLevel={15}
                 ref={mapRef}
             />
         </View>
+    )
     );
 }
 

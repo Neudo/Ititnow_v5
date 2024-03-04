@@ -1,9 +1,14 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, ScrollView} from "react-native";
+import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity} from "react-native";
 import Burger from "../../components/layouts/header/Burger";
-
+import * as Clipboard from 'expo-clipboard';
 function Result({route, navigation}) {
     const {restaurants} = route.params;
+    const [copiedText, setCopiedText] = React.useState('')
+    const copyToClipboard = async (adress) => {
+        await Clipboard.setStringAsync(adress);
+
+    };
 
     return (
         <ScrollView style={styles.container}>
@@ -22,6 +27,9 @@ function Result({route, navigation}) {
                             />
                             <Text style={styles.restauInfos} >Note sur google : {restaurant.rating} / 5</Text>
                             <Text style={styles.restauInfos} >{restaurant.vicinity}</Text>
+                            <TouchableOpacity onPress={() => copyToClipboard(restaurant.vicinity)}>
+                                <Text style={[styles.restauInfos, {color: 'blue'}]} >Copier l'adresse</Text>
+                            </TouchableOpacity>
                         </View>
                     </View>
                     ))
