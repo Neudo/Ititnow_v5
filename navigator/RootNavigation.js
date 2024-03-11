@@ -8,15 +8,22 @@ import OnBoarding from "../screens/onBoarding";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Menu from "../components/layouts/header/Menu";
 import Result from "../screens/protected/Result";
+import {useDispatch, useSelector} from "react-redux";
+import {userLoggedIn} from "../redux/slices/checkUser";
+
 
 
 function RootNavigation(props) {
-    const Stack = createNativeStackNavigator();
+    const Stack = createNativeStackNavigator()
     const navigation = useNavigation()
-    const [initialRoute, setInitialRoute] = useState('');
+    const [initialRoute, setInitialRoute] = useState('')
+    const dispatch = useDispatch()
+    const isUserLoggedIn = useSelector((state) => state.checkUser.value)
+
+
+
 
     //AsyncStorage
-
     async function checkFirstLaunch() {
         try {
             const value = await AsyncStorage.getItem('alreadyLaunched')
@@ -40,8 +47,7 @@ function RootNavigation(props) {
         const listener = (data) => {
             switch (data?.payload?.event) {
                 case 'signIn':
-                    console.log('user signed in')
-                    navigation.navigate("Home")
+                    dispatch(userLoggedIn(true))
                     break;
             }
         }
@@ -53,10 +59,10 @@ function RootNavigation(props) {
             try {
                 const user = await Auth.currentAuthenticatedUser()
                 if(user){
-                    navigation.navigate("Home")
+                    dispatch(userLoggedIn(true))
                 }
             } catch (error) {
-                console.log('error', error)
+                console.log('error : ', error)
             }
         }
         checkUser()
@@ -71,27 +77,35 @@ function RootNavigation(props) {
                 }}
             }
         >
+            {isUserLoggedIn ? (
+                <>
+                    <Stack.Screen
+                        name="Home" component={Home}
+                        options={{headerShown: false, animation: 'slide_from_right'}}
+                    />
+                    <Stack.Screen
+                        name="Menu" component={Menu}
+                        options={{headerShown: false, animation: 'slide_from_bottom'}}
+                    />
+                    <Stack.Screen
+                        name="Result" component={Result}
+                        options={{headerShown: false, animation: 'slide_from_bottom'}}
+                    />
+                </>
+            ) : (
+                <>
+                    <Stack.Screen
+                        name="OnBoarding" component={OnBoarding}
+                        options={{headerShown: false, animation: 'slide_from_left'}}
+                    />
+                    <Stack.Screen
+                        name="AuthLayout" component={Layout}
+                        options={{headerShown: false, animation: 'slide_from_right'}}
+                    />
+                </>
+            )}
 
-            <Stack.Screen
-                name="OnBoarding" component={OnBoarding}
-                options={{headerShown: false, animation: 'slide_from_left'}}
-            />
-            <Stack.Screen
-                name="AuthLayout" component={Layout}
-                options={{headerShown: false, animation: 'slide_from_right'}}
-            />
-            <Stack.Screen
-                name="Home" component={Home}
-                options={{headerShown: false, animation: 'slide_from_right'}}
-            />
-            <Stack.Screen
-                name="Menu" component={Menu}
-                options={{headerShown: false, animation: 'slide_from_bottom'}}
-            />
-            <Stack.Screen
-                name="Result" component={Result}
-                options={{headerShown: false, animation: 'slide_from_bottom'}}
-            />
+
 
         </Stack.Navigator>
     );

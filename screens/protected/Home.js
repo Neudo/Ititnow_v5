@@ -30,12 +30,12 @@ function Home(props) {
                 longitudeDelta: 0.0421,
             });
 
-                mapRef.current.animateToRegion({
-                    latitude: location.coords.latitude,
-                    longitude: location.coords.longitude,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }, 1000);
+            mapRef.current.animateToRegion({
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+            }, 1000);
 
             setLatitude(location.coords.latitude);
             setLongitude(location.coords.longitude);
@@ -50,9 +50,9 @@ function Home(props) {
             const response = await axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
                 params: {
                     location: `${latitude},${longitude}`,
-                    radius: 600,
+                    radius: 150,
                     type: 'restaurant',
-                    keyword: 'poulet',
+                    keyword: 'burger',
                     key: 'AIzaSyA3I7cXhLM51hRryr_l_70JMJqKuviH4do',
                     opennow: false,
                 }
@@ -87,50 +87,50 @@ function Home(props) {
 
 
     return (
-mapRegion === null ? <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Loading...</Text></View> :
-    (
-        <View style={{flex:1}}>
-            <Burger/>
-            <View style={styles.containerMain} >
-                <View style={styles.containerMainTop}>
-                    <TouchableOpacity style={[styles.btnMoreFilter, styles.btn]} >
-                        <Text style={{fontSize:14}}>Plus de filtres</Text>
-                    </TouchableOpacity>
+        mapRegion === null ? <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Loading...</Text></View> :
+            (
+                <View style={{flex:1}}>
+                    <Burger/>
+                    <View style={styles.containerMain} >
+                        <View style={styles.containerMainTop}>
+                            <TouchableOpacity style={[styles.btnMoreFilter, styles.btn]} >
+                                <Text style={{fontSize:14}}>Plus de filtres</Text>
+                            </TouchableOpacity>
+                        </View>
+
+                        <View style={styles.containerMiddle} >
+                            <TouchableOpacity style={[styles.btnFilter, styles.btn]} >
+                                <Text style={{fontSize:16}}>Mon budget</Text>
+                            </TouchableOpacity>
+
+
+                            <TouchableOpacity style={[styles.btnFilter, styles.btn]} >
+                                <Text style={{fontSize:16}}>Distance max</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.containerBigCta} >
+                            { <TouchableOpacity
+                                style={[styles.btn, styles.bigCta]}
+                                onPress={() => getNearbyRestaurants()}
+                            >
+                                <Text style={{fontSize: 26, fontFamily: 'PoppinsBold'}} >Trouve moi un restau</Text>
+                            </TouchableOpacity> }
+                        </View>
+
+                    </View>
+                    <MapView
+                        style={StyleSheet.absoluteFill}
+                        provider={PROVIDER_GOOGLE}
+                        initialRegion={mapRegion}
+                        showsUserLocation
+                        showsMyLocationButton
+                        followsUserLocation
+                        maxZoomLevel={17}
+                        minZoomLevel={15}
+                        ref={mapRef}
+                    />
                 </View>
-
-                <View style={styles.containerMiddle} >
-                    <TouchableOpacity style={[styles.btnFilter, styles.btn]} >
-                        <Text style={{fontSize:16}}>Mon budget</Text>
-                    </TouchableOpacity>
-
-
-                    <TouchableOpacity style={[styles.btnFilter, styles.btn]} >
-                        <Text style={{fontSize:16}}>Distance max</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.containerBigCta} >
-                    { <TouchableOpacity
-                        style={[styles.btn, styles.bigCta]}
-                        onPress={() => getNearbyRestaurants()}
-                    >
-                        <Text style={{fontSize: 26, fontFamily: 'PoppinsBold'}} >Trouve moi un restau</Text>
-                    </TouchableOpacity> }
-                </View>
-
-            </View>
-            <MapView
-                style={StyleSheet.absoluteFill}
-                provider={PROVIDER_GOOGLE}
-                initialRegion={mapRegion}
-                showsUserLocation
-                showsMyLocationButton
-                followsUserLocation
-                maxZoomLevel={17}
-                minZoomLevel={15}
-                ref={mapRef}
-            />
-        </View>
-    )
+            )
     );
 }
 

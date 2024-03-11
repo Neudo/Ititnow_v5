@@ -3,17 +3,20 @@ import {View, Text, StyleSheet, Pressable, TouchableOpacity} from "react-native"
 import { Auth } from 'aws-amplify';
 import {useNavigation} from "@react-navigation/native";
 import RemoveAds from "./RemoveAds";
+import {useDispatch} from "react-redux";
+import {userLoggedIn} from "../../../redux/slices/checkUser";
 
 
 
 function Menu() {
     const navigation = useNavigation()
+    const dispatch = useDispatch()
 
 
     async function signOut() {
         try {
             await Auth.signOut({ global: true });
-            navigation.navigate('AuthLayout')
+            dispatch(userLoggedIn(false))
         } catch (error) {
             console.log('error signing out: ', error);
         }
