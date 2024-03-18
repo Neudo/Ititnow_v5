@@ -5,6 +5,7 @@ import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import * as Location from 'expo-location';
 import axios from "axios";
 import Burger from "../../components/layouts/header/Burger";
+import ModalFilter from "../../components/Modal/ModalFilter";
 
 
 function Home(props) {
@@ -13,6 +14,7 @@ function Home(props) {
     const [mapRegion, setmapRegion] = useState(null);
     const [latitude, setLatitude] = useState(null);
     const [longitude, setLongitude] = useState(null);
+    const [modal, setModal] = useState('');
 
     useEffect(() => {
         (async () => {
@@ -91,6 +93,8 @@ function Home(props) {
             (
                 <View style={{flex:1}}>
                     <Burger/>
+                    <ModalFilter modal={modal}  />
+
                     <View style={styles.containerMain} >
                         <View style={styles.containerMainTop}>
                             <TouchableOpacity style={[styles.btnMoreFilter, styles.btn]} >
@@ -99,13 +103,19 @@ function Home(props) {
                         </View>
 
                         <View style={styles.containerMiddle} >
-                            <TouchableOpacity style={[styles.btnFilter, styles.btn]} >
+                            <TouchableOpacity
+                                style={[styles.btnFilter, styles.btn]}
+                                onPress={ () => setModal('budget') }
+                            >
                                 <Text style={{fontSize:16}}>Mon budget</Text>
                             </TouchableOpacity>
 
 
-                            <TouchableOpacity style={[styles.btnFilter, styles.btn]} >
-                                <Text style={{fontSize:16}}>Distance max</Text>
+                            <TouchableOpacity
+                                style={[styles.btnFilter, styles.btn]}
+                                onPress={ () => setModal('distance') }
+                            >
+                                <Text style={{fontSize:16}}>Distance</Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.containerBigCta} >
