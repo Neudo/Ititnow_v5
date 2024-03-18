@@ -32,36 +32,21 @@ function ModalFilter({modal}) {
 
 
     return (
-        <View style={styles.container} >
+        <>
             <Text style={{color:'white', fontSize:24}} >
                 {modal === 'budget' ? "Mon budget" : "Distance"}
             </Text>
-
             {modal === 'budget' && <BudgetFilter/>}
             {modal === 'distance' && <DistanceFilter/>}
-            {/*<BudgetFilter />*/}
-        </View>
+        </>
     );
 }
 
 export default ModalFilter;
 
 const styles = StyleSheet.create({
-    container: {
-        position: 'absolute',
-        top: '30%',
-        left: 0,
-        width: '100%',
-        backgroundColor: '#51796F',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 1000,
-        paddingHorizontal: 20,
-        paddingVertical: 50,
-    },
 
     //Filter
-
 
     filterContainer: {
         marginTop: 30,

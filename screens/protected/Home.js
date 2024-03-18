@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {ScrollView, Text, View, StyleSheet, Button, Pressable, TouchableOpacity} from "react-native";
+import {Text, View, StyleSheet, TouchableOpacity, Animated} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import MapView, {PROVIDER_GOOGLE} from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -9,6 +9,8 @@ import ModalFilter from "../../components/Modal/ModalFilter";
 
 
 function Home(props) {
+    const navigation = useNavigation()
+
     const mapRef = useRef()
     const [status, setStatus] = useState(null);
     const [mapRegion, setmapRegion] = useState(null);
@@ -43,9 +45,6 @@ function Home(props) {
             setLongitude(location.coords.longitude);
         })();
     }, []);
-
-
-    const navigation = useNavigation()
 
     const getNearbyRestaurants = async () => {
         try {
@@ -87,13 +86,53 @@ function Home(props) {
         }
     }
 
+    const handleModal = (modalType) => {
+
+        if(modal === ''){
+            setModal(modalType)
+            Animated.timing(leftAnim, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+            }).start();
+        } else if (modal === modalType) {
+            Animated.timing(leftAnim, {
+                toValue: 1000,
+                duration: 300,
+                useNativeDriver: true,
+            }).start();
+            setTimeout(() => {
+            setModal('')
+
+            }, 300)
+
+        } else {
+            setModal(modalType)
+            Animated.timing(leftAnim, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+            }).start();
+        }
+    }
+
+    // Animation modal
+
+    const leftAnim = useRef(new Animated.Value(1000)).current
+
+
+
+
+
 
     return (
         mapRegion === null ? <View style={{flex:1, justifyContent:'center', alignItems:'center'}}><Text>Loading...</Text></View> :
             (
                 <View style={{flex:1}}>
                     <Burger/>
-                    <ModalFilter modal={modal}  />
+                    <Animated.View style={[ styles.modal, { transform: [{translateX: leftAnim}] }]}>
+                        <ModalFilter  modal={modal}  />
+                    </Animated.View>
 
                     <View style={styles.containerMain} >
                         <View style={styles.containerMainTop}>
@@ -105,7 +144,7 @@ function Home(props) {
                         <View style={styles.containerMiddle} >
                             <TouchableOpacity
                                 style={[styles.btnFilter, styles.btn]}
-                                onPress={ () => setModal('budget') }
+                                onPress={ () => handleModal('budget') }
                             >
                                 <Text style={{fontSize:16}}>Mon budget</Text>
                             </TouchableOpacity>
@@ -113,7 +152,7 @@ function Home(props) {
 
                             <TouchableOpacity
                                 style={[styles.btnFilter, styles.btn]}
-                                onPress={ () => setModal('distance') }
+                                onPress={ () => handleModal('distance') }
                             >
                                 <Text style={{fontSize:16}}>Distance</Text>
                             </TouchableOpacity>
@@ -199,4 +238,17 @@ const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
     },
+    modal: {
+        position: 'absolute',
+        top: '30%',
+        left: 0,
+        width: '100%',
+        backgroundColor: '#51796F',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 1,
+        paddingHorizontal: 20,
+        paddingVertical: 50,
+    },
+
 })
