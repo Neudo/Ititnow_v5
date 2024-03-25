@@ -47,15 +47,22 @@ function Home(props) {
     }, []);
 
     const getNearbyRestaurants = async () => {
+
+        const distance = 150
+        const price = 2
+
+
         try {
             const response = await axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json', {
                 params: {
                     location: `${latitude},${longitude}`,
-                    radius: 150,
+                    radius: distance,
                     type: 'restaurant',
                     keyword: 'burger',
                     key: 'AIzaSyA3I7cXhLM51hRryr_l_70JMJqKuviH4do',
                     opennow: false,
+                    price_level: price,
+
                 }
             })
 

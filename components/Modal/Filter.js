@@ -1,21 +1,23 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, TouchableOpacity} from "react-native";
 
-function Filter({value}) {
-    const [filterActive, setFilterActive] = useState(false)
+function Filter({value,setIsFocused, isFocused=true}) {
+    const handleFilter = () => {
+        setIsFocused()
+    }
 
     return (
         <TouchableOpacity
             style={[
                 styles.budgetFilter,
-                filterActive && styles.active
+                isFocused && styles.active
             ]}
-            onPress={() => setFilterActive(true)}
+            onPress={handleFilter}
         >
             <Text
                 style={[
                     styles.budgetFilterText,
-                    filterActive && styles.activeText
+                    isFocused && styles.activeText
                 ]}>{value}</Text>
         </TouchableOpacity>
     );
@@ -26,7 +28,7 @@ export default Filter;
 const styles = StyleSheet.create({
     //Filter
     budgetFilter: {
-        padding: 10,
+        padding: 8,
         backgroundColor: 'white',
         borderRadius: 10,
         marginTop: 10,

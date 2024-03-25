@@ -5,22 +5,55 @@ import Filter from "./Filter";
 
 
 function BudgetFilter(props) {
+    const [focusedFilter, setFocusedFilter] = useState(null);
+
+    const filters = [
+        { id: 'A', value: 'Abordable' },
+        { id: 'B', value: 'Modéré' },
+        { id: 'C', value: 'Cher' },
+    ];
+
+    const handleFocus = (id) => {
+        setFocusedFilter(id)
+    }
+
     return (
         <View style={styles.filterContainer}>
-            <Filter value={"Abordable"} />
-            <Filter value={"Modéré"}/>
-            <Filter value={"Cher"}/>
+            {filters.map(filter => (
+                <Filter
+                    key={filter.id}
+                    setIsFocused={() => handleFocus(filter.id)}
+                    isFocused={focusedFilter === filter.id}
+                    value={filter.value}
+                />
+            ))}
         </View>
     );
 }
 
 function DistanceFilter(props) {
+    const [focusedFilter, setFocusedFilter] = useState(null);
+
+    const filters = [
+        { id: 'A', value: 'Proche' },
+        { id: 'B', value: 'Moyen' },
+        { id: 'C', value: 'Loin' },
+    ];
+
+    const handleFocus = (id) => {
+        setFocusedFilter(id);
+    }
 
     return (
         <View style={styles.filterContainer}>
-            <Filter value={"Proche"} />
-            <Filter value={"Moyen"}/>
-            <Filter value={"Loin"}/>
+            {filters.map(filter => (
+                <Filter
+                    key={filter.id}
+                    setIsFocused={() => handleFocus(filter.id)}
+                    isFocused={focusedFilter === filter.id}
+                    value={filter.value}
+                />
+            ))}
         </View>
     );
 }
